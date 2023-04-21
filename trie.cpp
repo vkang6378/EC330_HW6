@@ -10,10 +10,12 @@ void Trie::insert(string key, int val) {
         if (current -> children[x] == nullptr){
             current -> children[x] = new TrieNode();
             tree_size++;    
-            map_size++;
         }
         current = current -> children[x];
     }
+    if (current->val == 0) {
+        map_size++;  
+
     current->val = val;
 }
 
@@ -31,8 +33,8 @@ int Trie::search(string key) {
 
 void Trie::remove(string key) {
     TrieNode *current = root;
+    int x = c - 'a';
     for (char c : key) {
-        int x = c - 'a';
         if (current->children[x] == nullptr) {
             return;
         }
@@ -42,6 +44,8 @@ void Trie::remove(string key) {
         current->val = 0;
         map_size--;
     }
+    for (key : current.empty() != true)
+        delete node;
+    }
 }
-
 
