@@ -3,26 +3,16 @@
 
 using namespace std;
 
-int charToIndex(char c) {
-    return c - 'a';
-}
-
-char indexToChar(int idx) {
-    return 'a' + idx;
-}
-
 void Trie::insert(string key, int val) {
     TrieNode *current = root;
-    for (char c : key) {
-        int idx = charToIndex(c);
-        if (current->children[idx] == nullptr) {
-            current->children[idx] = new TrieNode();
-            tree_size++;
+    for(char c: key){
+        int x = c - 'a';
+        if (current -> children[x] == nullptr){
+            current -> children[x] = new TrieNode();
+            tree_size++;    
+            map_size++;
         }
-        current = current->children[idx];
-    }
-    if (current->val == 0) {
-        map_size++;
+        current = current -> children[x];
     }
     current->val = val;
 }
@@ -30,11 +20,11 @@ void Trie::insert(string key, int val) {
 int Trie::search(string key) {
     TrieNode *current = root;
     for (char c : key) {
-        int idx = charToIndex(c);
-        if (current->children[idx] == nullptr) {
+        int x = c - 'a';
+        if (current -> children[x] == nullptr) {
             return 0;
         }
-        current = current->children[idx];
+        current = current->children[x];
     }
     return current->val;
 }
@@ -42,14 +32,16 @@ int Trie::search(string key) {
 void Trie::remove(string key) {
     TrieNode *current = root;
     for (char c : key) {
-        int idx = charToIndex(c);
-        if (current->children[idx] == nullptr) {
+        int x = c - 'a';
+        if (current->children[x] == nullptr) {
             return;
         }
-        current = current->children[idx];
+        current = current->children[x];
     }
     if (current->val != 0) {
         current->val = 0;
         map_size--;
     }
 }
+
+
