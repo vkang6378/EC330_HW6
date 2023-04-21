@@ -18,6 +18,7 @@ void Trie::insert(string key, int val) {
 
     current->val = val;
 }
+}
 
 int Trie::search(string key) {
     TrieNode *current = root;
@@ -40,12 +41,8 @@ void Trie::remove(string key) {
         }
         current = current->children[x];
     }
-    if (current->val != 0) {
-        current->val = 0;
-        map_size--;
-    }
-    for (key : current.empty() != true)
-        delete node;
+
+    for (key : current->children.empty() == false){
+        delete current;
     }
 }
-
