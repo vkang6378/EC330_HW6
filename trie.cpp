@@ -3,22 +3,34 @@
 
 using namespace std;
 
+int charToIndex(char c) {
+    return c - 'a';
+}
+
+char indexToChar(int idx) {
+    return 'a' + idx;
+}
+
 void Trie::insert(string key, int val) {
     TrieNode *current = root;
-    for(char c: key){
-        int x = c - 'a';
-        if (current -> children[x] == nullptr){
-            current -> children[x] = new TrieNode();
-
+    for (char c : key) {
+        int idx = charToIndex(c);
+        if (current->children[idx] == nullptr) {
+            current->children[idx] = new TrieNode();
+            tree_size++;
         }
-        current = current -> children[x];
+        current = current->children[idx];
     }
+    if (current->val == 0) {
+        map_size++;
+    }
+    current->val = val;
 }
 
 int Trie::search(string key) {
     TrieNode *current = root;
     for (char c : key) {
-        int idx = c - 'a';
+        int idx = charToIndex(c);
         if (current->children[idx] == nullptr) {
             return 0;
         }
@@ -30,7 +42,7 @@ int Trie::search(string key) {
 void Trie::remove(string key) {
     TrieNode *current = root;
     for (char c : key) {
-        int idx = c - 'a';
+        int idx = charToIndex(c);
         if (current->children[idx] == nullptr) {
             return;
         }
@@ -41,5 +53,3 @@ void Trie::remove(string key) {
         map_size--;
     }
 }
-
-
