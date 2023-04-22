@@ -1,46 +1,88 @@
 #include "job.h"
 #include <vector>
-#include <queue>
-
 
 using namespace std;
 
-bool canFinish(int n, vector<pair<int, int>> &dependencies) { 
+bool canFinish(int n, vector<pair<int, int>>& dependencies) {
     vector<vector<int>> graph(n);
-    vector<int> indegrees(n, 0);
+    vector<int> visited(n, 0);
 
-    for (auto &dependency : dependencies) {
-        int x = dependency.first - 1;
-        int y = dependency.second - 1;
-        graph[x].push_back(y);
-        indegrees[y]++;
+    for (const auto& dep : dependencies) {
+        graph[dep.first - 1].push_back(dep.second - 1);
     }
 
-    queue<int> q;
-    for (int i = 0; i < n; i++) {
-        if (indegrees[i] == 0) {
-            q.push(i);
+    for (int i = 0; i < n; ++i) {
+        if (visited[i] == 0 && !dfs(graph, visited, i)) {
+            return false;
         }
     }
 
-    int finished_jobs = 0;
-    while (!q.empty()) {
-        int job = q.front();
-        q.pop();
-        finished_jobs++;
-
-        for (int dependent_job : graph[job]) {
-            indegrees[dependent_job]--;
-            if (indegrees[dependent_job] == 0) {
-                q.push(dependent_job);
-            }
-        }
-    }
-
-    return finished_jobs == n;
+    return true;
 }
-  
+
+bool dfs(const vector<vector<int>> &graph, vector<int> &visited, int node) {
+    if (visited[node] == -1) {
+        return false;
+    }
+
+    if (visited[node] == 1) {
+        return true;
+    }
+
+    visited[node] = -1;
+    for (int neighbor : graph[node]) {
+        if (!dfs(graph, visited, neighbor)) {
+            return false;
+        }
+    }
+
+    visited[node] = 1;
+    return true;
+}
 
 bool canRun(int n, vector<pair<int, int>> &dependencies, int j, int i) {
-  return false;
+    if (i < 1 || i > n || j < 1 || j > n) {
+        return false;
+    }
+
+    if (!canFinish(n, dependencies)) {
+        return false;
+    }
+
+    vector<vector<int>> graph(n);
+    for (const auto& dep : dependencies) {
+        graph[dep.first - 1].push_back(dep.second - 1);
+    }
+
+    vector<int> visited(n, 0);
+    int count = 0;
+
+    while (count < i) {
+        bool found = false;
+        for (int node = 0; node < n; ++node) {
+            if (visited[node] == 0 && allDependenciesMet(graph, visited, node)) {
+                if (node == j - 1) {
+                    return count == i - 1;
+                }
+                visited[node] = 1;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            break;
+        }
+        ++count;
+    }
+
+    return false;
+}
+
+bool allDependenciesMet(const vector<vector<int>>& graph, const vector<int>& visited, int node) {
+    for (int dependency : graph[node]) {
+        if (visited[dependency] == 0) {
+            return false;
+        }
+    }
+    return true;
 }
