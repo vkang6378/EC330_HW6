@@ -41,7 +41,13 @@ void Trie::remove(string key) {
         }
         current = current->children[x];
     }
+    
+    if (current->val == 0) {
+        return; 
+    }
 
+    current->val = 0;
+    map_size--;
 
     bool has_children = false;
     for (int i = 0; i < 26; i++) {
@@ -65,4 +71,5 @@ void Trie::remove(string key) {
         }
     }
 }
+
 
