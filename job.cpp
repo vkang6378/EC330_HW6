@@ -10,8 +10,10 @@ bool canFinish(int n, vector<pair<int, int>> &dependencies) {
     vector<vector<int>> graph(n);
     vector<int> visited(n, 0);
 
-    for (const auto &dep : dependencies) {
-        graph[dep.first - 1].push_back(dep.second - 1);
+    for (int i = 0; i < dependencies.size(); ++i) {
+        int from = dependencies[i].first - 1;
+        int to = dependencies[i].second - 1;
+        graph[from].push_back(to);
     }
 
     for (int i = 0; i < n; ++i) {
