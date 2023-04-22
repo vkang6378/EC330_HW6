@@ -4,7 +4,7 @@
 using namespace std;
 
 bool dfs(vector<vector<int>> &graph, vector<int> &visited, int node);
-bool allDependenciesMet(vector<vector<int>> &graph, vector<int> &visited, int node);
+bool dependencies_met(vector<vector<int>> &graph, vector<int> &visited, int node);
 
 bool canFinish(int n, vector<pair<int, int>> &dependencies) {
     vector<vector<int>> graph(n);
@@ -60,7 +60,7 @@ bool canRun(int n, vector<pair<int, int>> &dependencies, int j, int i) {
     while (count < i) {
         bool found = false;
         for (int node = 0; node < n; ++node) {
-            if (visited[node] == 0 && allDependenciesMet(graph, visited, node)) {
+            if (visited[node] == 0 && dependencies_met(graph, visited, node)) {
                 if (node == j - 1) {
                     return count == i - 1;
                 }
@@ -78,7 +78,7 @@ bool canRun(int n, vector<pair<int, int>> &dependencies, int j, int i) {
     return false;
 }
 
-bool allDependenciesMet(vector<vector<int>> &graph, vector<int> &visited, int node) {
+bool dependencies_met(vector<vector<int>> &graph, vector<int> &visited, int node) {
     for (int neighbor : graph[node]) {
         if (visited[neighbor] != 2) {
             return false;
