@@ -11,9 +11,7 @@ bool canFinish(int n, vector<pair<int, int>> &dependencies) {
     vector<int> visited(n, 0);
 
     for (int i = 0; i < dependencies.size(); ++i) {
-        int from = dependencies[i].first - 1;
-        int to = dependencies[i].second - 1;
-        graph[from].push_back(to);
+        graph[dependencies[i].first - 1].push_back(dependencies[i].second - 1);
     }
 
     for (int i = 0; i < n; ++i) {
