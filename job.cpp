@@ -6,12 +6,11 @@ using namespace std;
 bool dfs(vector<vector<int>> &graph, vector<int> &visited, int node);
 bool allDependenciesMet(vector<vector<int>> &graph, vector<int> &visited, int node);
 
-
-bool canFinish(int n, vector<pair<int, int>>& dependencies) {
+bool canFinish(int n, vector<pair<int, int>> &dependencies) {
     vector<vector<int>> graph(n);
     vector<int> visited(n, 0);
 
-    for (const auto& dep : dependencies) {
+    for (const auto &dep : dependencies) {
         graph[dep.first - 1].push_back(dep.second - 1);
     }
 
@@ -24,23 +23,20 @@ bool canFinish(int n, vector<pair<int, int>>& dependencies) {
     return true;
 }
 
-bool dfs(const vector<vector<int>> &graph, vector<int> &visited, int node) {
-    if (visited[node] == -1) {
+bool dfs(vector<vector<int>> &graph, vector<int> &visited, int node) {
+    if (visited[node] == 1) {
         return false;
     }
 
-    if (visited[node] == 1) {
-        return true;
-    }
+    visited[node] = 1;
 
-    visited[node] = -1;
     for (int neighbor : graph[node]) {
-        if (!dfs(graph, visited, neighbor)) {
+        if (visited[neighbor] != 2 && !dfs(graph, visited, neighbor)) {
             return false;
         }
     }
 
-    visited[node] = 1;
+    visited[node] = 2;
     return true;
 }
 
@@ -82,11 +78,12 @@ bool canRun(int n, vector<pair<int, int>> &dependencies, int j, int i) {
     return false;
 }
 
-bool allDependenciesMet(const vector<vector<int>>& graph, const vector<int>& visited, int node) {
-    for (int dependency : graph[node]) {
-        if (visited[dependency] == 0) {
+bool allDependenciesMet(vector<vector<int>> &graph, vector<int> &visited, int node) {
+    for (int neighbor : graph[node]) {
+        if (visited[neighbor] != 2) {
             return false;
         }
     }
+
     return true;
 }
