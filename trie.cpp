@@ -46,6 +46,9 @@ void Trie::remove(string key) {
         return; 
     }
 
+    current->val = 0;
+    map_size--;
+
     bool has_children = false;
     for (int i = 0; i < 26; i++) {
         if (current->children[i] != nullptr) {
@@ -57,10 +60,10 @@ void Trie::remove(string key) {
     if (!has_children) {
         TrieNode *parent = root;
         for (char c : key) {
-             int x = c - 'a';
+            int x = c - 'a';
             if (parent->children[x] == current) {
+                delete parent->children[x];
                 parent->children[x] = nullptr;
-                delete current;
                 tree_size--;
                 break;
             }
@@ -68,3 +71,4 @@ void Trie::remove(string key) {
         }
     }
 }
+
