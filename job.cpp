@@ -3,6 +3,10 @@
 
 using namespace std;
 
+bool dfs(vector<vector<int>> &graph, vector<int> &visited, int node);
+bool allDependenciesMet(vector<vector<int>> &graph, vector<int> &visited, int node);
+
+
 bool canFinish(int n, vector<pair<int, int>>& dependencies) {
     vector<vector<int>> graph(n);
     vector<int> visited(n, 0);
