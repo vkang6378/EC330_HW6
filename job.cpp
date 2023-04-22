@@ -41,15 +41,7 @@ bool dfs(vector<vector<int>> &graph, vector<int> &visited, int node) {
 }
 
 bool canRun(int n, vector<pair<int, int>> &dependencies, int j, int i) {
-    if (i < 1 || i > n || j < 1 || j > n) {
-        return false;
-    }
-
-    if (!canFinish(n, dependencies)) {
-        return false;
-    }
-
-    vector<vector<int>> graph(n);
+   vector<vector<int>> graph(n);
     for (const auto& dep : dependencies) {
         graph[dep.first - 1].push_back(dep.second - 1);
     }
