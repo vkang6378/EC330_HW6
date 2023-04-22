@@ -59,6 +59,7 @@ void Trie::remove(string key) {
         for (char c : key) {
              int x = c - 'a';
             if (parent->children[x] == current) {
+                parent->children[x] = nullptr;
                 delete current;
                 tree_size--;
                 break;
